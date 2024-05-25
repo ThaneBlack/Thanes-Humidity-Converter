@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thane's Humidity Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        input {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: calc(100% - 22px);
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Thane's Humidity Converter</h1>
+        <p>Enter the outside temperature and relative humidity to find out what it converts to indoors at 73°F.</p>
+        <input type="number" id="outsideTemp" placeholder="Outside Temperature (°F)" required>
+        <input type="number" id="outsideHumidity" placeholder="Outside Humidity (%)" required>
+        <button onclick="convertHumidity()">Convert</button>
+        <div class="result" id="result"></div>
+    </div>
+    <script>
+        function convertHumidity() {
+            const outsideTemp = parseFloat(document.getElementById('outsideTemp').value);
+            const outsideHumidity = parseFloat(document.getElementById('outsideHumidity').value);
+            const indoorTemp = 73;
+
+            if (isNaN(outsideTemp) || isNaN(outsideHumidity)) {
+                alert("Please enter valid numbers for temperature and humidity.");
+                return;
+            }
+
+            const es = (T) => 6.112 * Math.exp((17.67 * T) / (T + 243.5));
+            const e = (outsideHumidity / 100) * es(outsideTemp);
+            const indoorHumidity = (e / es(indoorTemp)) * 100;
+
+            document.getElementById('result').innerText = `The relative humidity indoors at 73°F would be approximately ${indoorHumidity.toFixed(2)}%.`;
+        }
+    </script>
+</body>
+</html>
